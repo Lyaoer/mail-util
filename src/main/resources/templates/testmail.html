@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="js/myscript.js"></script>
+    <script type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
+    <meta charset="UTF-8"/>
+    <title>发送邮件测试界面</title>
+</head>
+<body>
+<h2>请输入相关信息：</h2>
+<form action="/sendmail" name="testmail" enctype="multipart/form-data" accept-charset="UTF-8" id="testmail" method="post" >
+    <div>
+        <label for="from">发送人:</label>
+        <input type="text" id="from" name="from" />
+    </div>
+
+    <div>
+        <label for="to">收件人:</label>
+        <input type="text" id="to" name="to" />
+    </div>
+
+    <div>
+        <label for="to">抄送人:</label>
+        <input type="text" id="cc" name="cc" />
+    </div>
+
+    <div>
+        <label for="subject">主题:</label>
+        <input type="text" id="subject" name="subject" />
+    </div>
+
+    <div>
+        <label for="body">内容:</label>
+        <input type="text" id="body" name="body" />
+    </div>
+
+    <div id="fileUpload">
+        <label for="files1">附件</label>
+        <input type="file" id="files1" name="files"/>
+        <input type="file" id="files2" name="files"/>
+        <input type="file" id="files3" name="files"/>
+    </div>
+
+    <input type="submit" id="btnsubmite" value="发送邮件"/>
+</form>
+</body>
+</html>

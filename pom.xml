@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.founder.ark</groupId>
+        <artifactId>common-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+	<artifactId>mail-util</artifactId>
+	<name>mail-util</name>
+	<url>http://maven.apache.org</url>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency><!-- google开源json处理 -->
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+        <dependency><!-- 共用工具类 -->
+            <groupId>com.founder.ark</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!--HTTPClient模拟post请求-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+        </dependency>
+
+    </dependencies>
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>Founder Repository</name>
+			<url>http://fzkb.founder.com.cn/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<build>
+		<plugins>
+			<plugin><!-- 编译打包 -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>springloaded</artifactId>
+						<version>1.2.6.RELEASE</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+    <profiles>
+        <profile>
+            <id>build-push-docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>1.0.0</version>
+                        <executions>
+                            <!-- 生成第一个镜像并push -->
+                            <execution>
+                                <id>build-image</id>
+                                <!-- 执行阶段 -->
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- 自动push镜像 -->
+                                    <pushImage>true</pushImage>
+
+                                    <serverId>founder-docker-hub</serverId>
+                                    <registryUrl>http://${registry_url}</registryUrl>
+
+                                    <!-- 第一个docker文件目录 -->
+                                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                                    <!-- 镜像 -->
+                                    <imageName>${registry_url}/founder/mail-util</imageName>
+                                    <imageTags>
+                                        <imageTag>${docker_tag}</imageTag>
+                                        <imageTag>latest</imageTag>
+                                    </imageTags>
+                                    <!-- 所需资源 -->
+                                    <resources>
+                                        <resource>
+                                            <targetPath>/</targetPath>
+                                            <directory>${project.build.directory}</directory>
+                                            <include>mail-util-1.0.0-SNAPSHOT.jar</include>
+                                        </resource>
+                                    </resources>
+                                    <!-- 执行目录 -->
+                                    <buildDirectory>${project.build.directory}</buildDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

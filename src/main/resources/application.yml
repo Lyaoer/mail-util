@@ -1,0 +1,10 @@
+#激活哪个配置文件
+spring:
+    profiles:
+        active: production
+#公共配置
+server:
+    port: 9025
+mail:
+    sendNamePass: hold\\dz-service
+    sendPassword: Founder@2011!

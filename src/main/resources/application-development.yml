@@ -1,0 +1,8 @@
+spring:
+  rabbitmq:
+    host: rabbitmq.rabbitmq #172.19.210.91 #本地的rabbitmq,开发用
+    port: 5672
+    username: founder #guest
+    password: Founder123 #guest
+    publisher-confirms: true
+    virtual-host: /

@@ -1,0 +1,11 @@
+version: '2'
+services:
+  mail:
+    image: founder/mail-util:${DOCKER_TAG}
+    restart: always
+    labels:
+      traefik.enable: stack
+      traefik.port: 9025
+      traefik.alias: mail
+    environment:
+      MAIL_RABBITMQ: development
